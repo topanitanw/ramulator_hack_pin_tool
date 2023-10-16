@@ -83,7 +83,7 @@ public:
 
     Queue readq;  // queue for read requests
     Queue writeq;  // queue for write requests
-    Queue actq; // read and write requests for which activate was issued are moved to 
+    Queue actq; // read and write requests for which activate was issued are moved to
                    // actq, which has higher priority than readq and writeq.
                    // This is an optimization
                    // for avoiding useless activations (i.e., PRECHARGE
@@ -520,7 +520,7 @@ public:
     }
 
     void set_high_writeq_watermark(const float watermark) {
-       wr_high_watermark = watermark; 
+       wr_high_watermark = watermark;
     }
 
     void set_low_writeq_watermark(const float watermark) {
@@ -560,7 +560,7 @@ private:
 			int num_row_hits = 0;
 
             for (auto itr = queue->q.begin(); itr != queue->q.end(); ++itr) {
-                if (is_row_hit(itr)) { 
+                if (is_row_hit(itr)) {
                     auto begin2 = itr->addr_vec.begin();
                     vector<int> rowgroup2(begin2, begin2 + int(T::Level::Row) + 1);
                     if(rowgroup == rowgroup2)
@@ -580,8 +580,8 @@ private:
                 }
             }
 
-            assert(num_row_hits > 0); // The current request should be a hit, 
-                                      // so there should be at least one request 
+            assert(num_row_hits > 0); // The current request should be a hit,
+                                      // so there should be at least one request
                                       // that hits in the current open row
             if(num_row_hits == 1) {
                 if(cmd == T::Command::RD)
@@ -606,7 +606,7 @@ private:
                 useless_activates++;
             }
         }
- 
+
         rowtable->update(cmd, addr_vec, clk);
         if (record_cmd_trace){
             // select rank
@@ -635,22 +635,6 @@ private:
     }
 };
 
-template <>
-vector<int> Controller<SALP>::get_addr_vec(
-    SALP::Command cmd, list<Request>::iterator req);
-
-template <>
-bool Controller<SALP>::is_ready(list<Request>::iterator req);
-
-template <>
-void Controller<ALDRAM>::update_temp(ALDRAM::Temp current_temperature);
-
-template <>
-void Controller<TLDRAM>::tick();
-
-template <>
-void Controller<TLDRAM>::cmd_issue_autoprecharge(typename TLDRAM::Command& cmd,
-                                                    const vector<int>& addr_vec);
 
 } /*namespace ramulator*/
 

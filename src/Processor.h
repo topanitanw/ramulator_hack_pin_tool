@@ -13,7 +13,7 @@
 #include <ctype.h>
 #include <functional>
 
-namespace ramulator 
+namespace ramulator
 {
 
 class Trace {
